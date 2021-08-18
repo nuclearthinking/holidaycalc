@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "holidaycalc"
+version = "0.1.0"
+authors = ["nuclearthinking <onifent@gmail.com>"]
+description = "Django app to solve money bookkeping problem after holidays/parties"
+readme = "README.md"
+
+[tool.poetry.scripts]
+holidaycalc = "holidaycalc.cli:cli"
+
+
+[tool.poetry.dependencies]
+python = "^3.9"
+click = "^8.0.1"
+psycopg2-binary = "^2.9.1"
