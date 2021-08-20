@@ -1,0 +1,8 @@
+.envrc
+.gitignore
+db.sqlite3
+docker-compose*
+Dockerfile*
+README.md
+.direnv
+
