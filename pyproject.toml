@@ -6,12 +6,14 @@ description = "Django app to solve money bookkeping problem after holidays/parti
 readme = "README.md"
 
 [tool.poetry.scripts]
-holidaycalc = "holidaycalc.cli:cli"
+holidaycalc = "backend.app:cli"
 
 
 [tool.poetry.dependencies]
 python = "^3.9"
 click = "^8.0.1"
 psycopg2-binary = "^2.9.1"
-Django = "^3.2.6"
-djangorestframework = "^3.12.4"
+tornado = "^6.1"
+pydantic = "^1.8.2"
+SQLAlchemy = "^1.4.23"
+asyncpgsa = "^0.27.1"
