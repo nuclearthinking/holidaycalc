@@ -1,1 +1,5 @@
 db.sqlite3
+.direnv
+src/frontend/build
+src/frontend/node_modules
+src/backend/static

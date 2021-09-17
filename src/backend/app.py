@@ -7,6 +7,9 @@ import tornado.web
 
 from backend import handlers
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 
 def setup():
     ...
@@ -21,13 +24,12 @@ def cli() -> None:
 def serve() -> None:
     app = tornado.web.Application(
         handlers=[
-            tornado.web.url(r'/', handlers.RootHandler),
-            tornado.web.url(r'/static/(.*)', tornado.web.StaticFileHandler)
+            (r'/static/(.*)', tornado.web.StaticFileHandler, {'path': STATIC_ROOT}),
+            ('/', handlers.RootHandler)
         ],
         debug=True,
         log_function=_log_method,
-        static_path=os.path.join(os.path.dirname(__file__), "static"),
-        template_path=os.path.join(os.path.dirname(__file__), "templates"),
+        template_path=STATIC_ROOT,
         default_handler_class=handlers.NotFoundHandler,
         autoreload=True,
     )
