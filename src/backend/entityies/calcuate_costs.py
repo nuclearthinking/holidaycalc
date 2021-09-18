@@ -28,34 +28,44 @@ class Group:
     persons: list[Person]
     spending: List[Bill]
 
-    def get_alcohol_spent(self) -> int:
+    @property
+    def alcohol_spent(self) -> int:
         spent = 0
         for i in self.spending:
             if i.bill_type == BillType.alcohol:
                 spent += i.amount
         return spent
 
-    def get_meat_spent(self) -> int:
+    @property
+    def meat_spent(self) -> int:
         spent = 0
         for i in self.spending:
             if i.bill_type == BillType.meat:
                 spent += i.amount
         return spent
 
-    def get_general_spent(self) -> int:
+    @property
+    def general_spent(self) -> int:
         spent = 0
         for i in self.spending:
             if i.bill_type == BillType.general:
                 spent += i.amount
         return spent
 
-    def get_persons_count(self) -> int:
+    @property
+    def total_spent(self) -> int:
+        return sum(i.amount for i in self.spending)
+
+    @property
+    def persons_count(self) -> int:
         return len(self.persons)
 
-    def get_alcohol_drinkers_count(self) -> int:
+    @property
+    def alcohol_drinkers_count(self) -> int:
         return len(list(filter(lambda x: x.drinks_alcohol, self.persons)))
 
-    def get_meat_eaters_count(self) -> int:
+    @property
+    def meat_eaters_count(self) -> int:
         return len(list(filter(lambda x: x.eat_meat, self.persons)))
 
 

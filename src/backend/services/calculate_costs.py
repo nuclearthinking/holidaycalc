@@ -7,9 +7,7 @@ from backend.entityies.calcuate_costs import Bill, BillType, Calculation, Group,
 @dataclass
 class GroupBalance:
     group: Group
-    general_balance: int
-    meat_balance: int
-    alcohol_balance: int
+    balance: int
 
 
 async def calculate_spendinds(calc: Calculation) -> None:
@@ -20,24 +18,28 @@ async def calculate_spendinds(calc: Calculation) -> None:
     alcohol_total_spent = 0
     meat_total_spent = 0
     for group in calc.groups:
-        alcohol_drinkers += group.get_alcohol_drinkers_count()
-        meat_eaters += group.get_meat_eaters_count()
-        general_persons += group.get_persons_count()
-        general_total_spent += group.get_general_spent()
-        alcohol_total_spent += group.get_alcohol_spent()
-        meat_total_spent += group.get_meat_spent()
-    meat_per_person = meat_total_spent / meat_eaters
-    alcohol_per_person = alcohol_total_spent / alcohol_drinkers
-    general_per_person = general_total_spent / general_persons
+        alcohol_drinkers += group.alcohol_drinkers_count
+        meat_eaters += group.meat_eaters_count
+        general_persons += group.persons_count
+        general_total_spent += group.general_spent
+        alcohol_total_spent += group.alcohol_spent
+        meat_total_spent += group.meat_spent
+    meat_per_person = round(meat_total_spent / meat_eaters, 2)
+    alcohol_per_person = round(alcohol_total_spent / alcohol_drinkers, 2)
+    general_per_person = round(general_total_spent / general_persons, 2)
     payers = []
     for group in calc.groups:
-        payers.append(GroupBalance(
+        group_balance = GroupBalance(
             group=group,
-            general_balance=group.get_general_spent(),
-            meat_balance=group.get_meat_spent(),
-            alcohol_balance=group.get_alcohol_spent(),
-        ))
-    print()
+            balance=group.total_spent * -1
+        )
+        group_balance.balance += meat_per_person * group.meat_eaters_count
+        group_balance.balance += alcohol_per_person * group.alcohol_drinkers_count
+        group_balance.balance += general_per_person * group.persons_count
+        payers.append(group_balance)
+
+    print(payers)
+
 
 config = Calculation(
     groups=[
