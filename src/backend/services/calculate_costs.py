@@ -15,7 +15,7 @@ class GroupBalance:
 class PaymentAction:
     payer: str
     recepient: str
-    amount: int
+    amount: float
 
 
 async def calculate_spendinds(calc: Calculation) -> None:
@@ -72,6 +72,7 @@ async def calculate_spendinds(calc: Calculation) -> None:
             )
             recepient.balance += payer.balance
             payer.balance = 0
+    return result_actions
 
 
 def get_next_proficit(actors: list[GroupBalance]) -> Optional[GroupBalance]:

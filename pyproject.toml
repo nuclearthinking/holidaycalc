@@ -19,3 +19,10 @@ SQLAlchemy = "^1.4.23"
 asyncpgsa = "^0.27.1"
 marshmallow-dataclass = "^8.5.3"
 marshmallow = "^3.13.0"
+
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+pytest-tornado = "*"
+pytest-mock = "*"
+pyhamcrest = "*"
