@@ -2,6 +2,15 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import List
 
+from backend.helpers.http import generate_schema
+
+
+@dataclass
+class PaymentAction:
+    payer: str
+    recepient: str
+    amount: float
+
 
 @dataclass
 class Person:
@@ -70,5 +79,21 @@ class Group:
 
 
 @dataclass
-class Calculation:
+class EventParams:
     groups: list[Group]
+
+
+@dataclass
+class CalculateSpendingsRequest:
+    event_name: str
+    participants: list[Group]
+
+
+@dataclass
+class CalculateSpeningsResponse:
+    payments: list[PaymentAction]
+
+
+CalcualteSpendingsRequestSchema = generate_schema(CalculateSpendingsRequest)
+
+CalculateSpeningsResponseSchema = generate_schema(CalculateSpeningsResponse)

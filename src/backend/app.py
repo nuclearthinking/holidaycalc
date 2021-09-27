@@ -7,6 +7,7 @@ import tornado.web
 
 from backend import handlers
 
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
@@ -25,7 +26,8 @@ def serve() -> None:
     app = tornado.web.Application(
         handlers=[
             (r'/static/(.*)', tornado.web.StaticFileHandler, {'path': STATIC_ROOT}),
-            ('/', handlers.RootHandler)
+            ('/', handlers.RootHandler),
+            ('/calculator/calculate-spendings', handlers.CalculateSpendingsHandler)
         ],
         debug=True,
         log_function=_log_method,
