@@ -5,8 +5,7 @@ import tornado.ioloop
 import tornado.log
 import tornado.web
 
-from backend import handlers
-
+from holidaycalc import handlers
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')

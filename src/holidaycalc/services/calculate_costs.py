@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from decimal import Decimal, getcontext, setcontext, ROUND_HALF_UP
 from typing import Optional
 
-from backend.entityies.calcuate_costs import Bill, BillType, EventParams, Group, PaymentAction, Person
+from holidaycalc.entityies.calcuate_costs import Bill, BillType, EventParams, Group, PaymentAction, Person
 
 
 cent = Decimal('0.01')

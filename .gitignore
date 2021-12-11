@@ -1,5 +1,5 @@
 db.sqlite3
 .direnv
-src/frontend/build
-src/frontend/node_modules
-src/backend/static
+src/holidaycalc/frontend/build
+src/holidaycalc/frontend/node_modules
+.pytest_cache

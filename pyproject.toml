@@ -2,11 +2,11 @@
 name = "holidaycalc"
 version = "0.1.0"
 authors = ["nuclearthinking <onifent@gmail.com>"]
-description = "Django app to solve money bookkeping problem after holidays/parties"
+description = "react/tornado app to solve money bookkeping problem after holidays/parties"
 readme = "README.md"
 
 [tool.poetry.scripts]
-holidaycalc = "backend.app:cli"
+holidaycalc = "holidaycalc.app:cli"
 
 
 [tool.poetry.dependencies]

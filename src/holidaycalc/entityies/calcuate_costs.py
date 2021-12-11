@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import List
 
-from backend.helpers.http import generate_schema
+from holidaycalc.helpers.http import generate_schema
 
 
 @dataclass

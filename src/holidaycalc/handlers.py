@@ -1,11 +1,11 @@
 import tornado.web
 
-from backend.entityies.calcuate_costs import (
+from holidaycalc.entityies.calcuate_costs import (
     CalcualteSpendingsRequestSchema, CalculateSpendingsRequest,
     CalculateSpeningsResponse, CalculateSpeningsResponseSchema, EventParams,
 )
-from backend.helpers.http import api_schema
-from backend.services.calculate_costs import calculate_spendinds
+from holidaycalc.helpers.http import api_schema
+from holidaycalc.services.calculate_costs import calculate_spendinds
 
 
 class CalculateSpendingsHandler(tornado.web.RequestHandler):
