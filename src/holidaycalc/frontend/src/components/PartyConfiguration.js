@@ -1,8 +1,8 @@
 import {Counter} from "../feature/counter/Counter";
 import {useSelector, useDispatch} from 'react-redux'
 import {Modal, Button} from 'react-bootstrap'
-import {groupAdded} from "../feature/groups/groupsSlice";
-import { nanoid } from '@reduxjs/toolkit'
+import {addPerson, addGroup} from "../feature/groups/groupsSlice";
+import {nanoid} from '@reduxjs/toolkit'
 
 
 export default function PartyConfiguration() {
@@ -12,28 +12,42 @@ export default function PartyConfiguration() {
 
     return <div className='container'>
         {groups.map((group, i) => {
-            return <Group name={group.name}/>
+            return <Group name={group.name} id={group.id} key={group.id} persons={group.persons}/>
         })}
-        <div className={'row align-content-center'} style={{'margin-top': 10}}>
-            <button className={'btn btn-success btn-lg'} onClick={() => dispatch(groupAdded({
+        <div className={'row align-content-center'} style={{marginTop: 10}}>
+            <button className={'btn btn-success btn-lg'} onClick={() => dispatch(addGroup({
                 id: nanoid(),
                 name: 'new name',
                 persons: []
-            }))}>+</button>
+            }))}>+
+            </button>
         </div>
     </div>
 }
 
 function Group(props) {
+    const {id, name, persons} = props
+    const dispatch = useDispatch()
+
+
+    function addNewPerson() {
+        dispatch(addPerson({
+            id: id
+        }))
+    }
 
     return (
         <div className='container'>
             <div className='row'>
-                <p className={'h4'}>{props.name}</p>
+                <p className={'h4'}>{name}</p>
             </div>
             <div className='row justify-content-center'>
-                <Person name={'vlad'}/>
-                <Person name={'hannah'}/>
+                {persons ? persons.map((person, i) => {
+                    return <Person name={person.name}/>
+                }) : ''}
+                <div className={'col-1'}>
+                    <button onClick={addNewPerson}>add</button>
+                </div>
             </div>
             <div className={'row'} style={{marginTop: '10px'}}>
                 <p className={'h6'}>Spendings</p>
@@ -48,8 +62,8 @@ function Group(props) {
     )
 }
 
-function Person(props) {
 
+function Person(props) {
     return (
         <div className={'row'} style={{marginTop: '10px'}}>
             <div className="input-group flex-nowrap">
