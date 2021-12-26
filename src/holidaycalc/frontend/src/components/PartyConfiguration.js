@@ -79,9 +79,11 @@ function Group(props) {
                 </div>
             </div>
             <div className='row justify-content-center'>
-                {spendings ? spendings.map((person, i) => {
+                {spendings ? spendings.map((spending, i) => {
                     return <Spending
-
+                        amount={spending.amount}
+                        type={spending.type}
+                        id={spending.id}
                     />
                 }) : ''}
             </div>
@@ -127,9 +129,9 @@ function Spending(props) {
     return (
         <div className={'row'} style={{marginTop: '10px'}}>
             <div className="input-group flex-nowrap">
-                <input type="text" className="form-control" placeholder="Spent amount"/>
-                <select className="form-select">
-                    <option selected={true} value={'other'}>Other</option>
+                <input type="text" className="form-control" placeholder="Spent amount" value={amount}/>
+                <select className="form-select" value={type}>
+                    <option value={'other'}>Other</option>
                     <option value={'alcohol'}>Alcohol</option>
                     <option value={'meat'}>Meat</option>
                 </select>

@@ -25,8 +25,8 @@ export const groupsSlice = createSlice({
             const group = state.find(group => group.id === id)
             group.spendings.push({
                 id: nanoid(),
-                amount: '',
-                type: '0'
+                amount: '123123',
+                type: 'other'
             })
         },
         changePersonName(state, action) {
