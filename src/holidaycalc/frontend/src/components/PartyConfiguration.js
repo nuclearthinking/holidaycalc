@@ -117,11 +117,11 @@ function Group(props) {
     }
 
     return (
-        <div className='container'>
+        <div className='container' style={{marginTop:15}}>
             <div className='row'>
-                <p className={'h4'}>{name}</p>
+                <p className={'h3'}>{name}</p>
             </div>
-            <div className={'row'} style={{marginTop: '10px'}}>
+            <div className={'row'}>
                 <div className={'col'}>
                     <p className={'h6'}>Persons <FontAwesomeIcon icon={faPlusCircle} color={'green'}
                                                                  onClick={addNewPerson}/></p>
@@ -138,7 +138,7 @@ function Group(props) {
                     />
                 }) : ''}
             </div>
-            <div className={'row'} style={{marginTop: '10px'}}>
+            <div className={'row'} style={{marginTop: 5}}>
                 <div className={'col'}>
                     <p className={'h6'}>Spendings <FontAwesomeIcon icon={faPlusCircle} color={'green'}
                                                                    onClick={addNewSpending}/></p>
@@ -179,20 +179,26 @@ function Person(props) {
     }
 
     return (
-        <div className={'row'} style={{marginTop: '10px'}}>
-            <div className="input-group flex-nowrap">
-                <span className="input-group-text" id="name"><i className="bi bi-person-circle"/></span>
-                <input type="text" className="form-control" placeholder="Name" aria-label="Username"
-                       aria-describedby="name" value={name} onChange={onChangeName}/>
-                <span className="input-group-text">Alcohol</span>
-                <div className="input-group-text">
-                    <input className="form-check-input mt-0" type="checkbox" checked={drinksAlcohol}
-                           onChange={onChangeDrinksAlcohol}/>
+        <div className={'row align-content-center'}>
+            <div className={'row justify-content-center'}>
+                <div className={'col-md-12 col-lg-6'}>
+                    <div className="input-group flex-nowrap">
+                        <span className="input-group-text" id="name"><i className="bi bi-person-circle"/></span>
+                        <input type="text" className="form-control" placeholder="Name" aria-label="Username"
+                               aria-describedby="name" value={name} onChange={onChangeName}/>
+                    </div>
                 </div>
-                <span className="input-group-text">Meat</span>
-                <div className="input-group-text">
-                    <input className="form-check-input mt-0" type="checkbox" checked={eatMeat}
-                           onChange={onChangeEatMeat}/>
+                <div className={'col-md-12 col-lg-6 align-self-center'}>
+                        <div className="form-check form-check-inline">
+                            <input className="form-check-input" type="checkbox" id="alcoholCheckbox" checked={drinksAlcohol}
+                               onChange={onChangeDrinksAlcohol}/>
+                            <label className="form-check-label" htmlFor="alcoholCheckbox">Alcohol</label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                            <input className="form-check-input" type="checkbox" id="meatCheckbox" checked={eatMeat}
+                               onChange={onChangeEatMeat}/>
+                            <label className="form-check-label" htmlFor="meatCheckbox">Meat</label>
+                        </div>
                 </div>
             </div>
         </div>
@@ -218,7 +224,7 @@ function Spending(props) {
     }
 
     return (
-        <div className={'row'} style={{marginTop: '10px'}}>
+        <div className={'row'}>
             <div className="input-group flex-nowrap">
                 <input type="number" className="form-control" placeholder="Spent amount" value={amount}
                        onChange={onChangeAmount}/>
