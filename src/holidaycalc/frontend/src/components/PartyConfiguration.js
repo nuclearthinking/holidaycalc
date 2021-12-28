@@ -10,6 +10,9 @@ import {
     toggleDrinksAlcohol,
     toggleEatMeat
 } from "../feature/groups/groupsSlice";
+import {
+    addPayments
+} from "../feature/payments/paymentsSlice"
 import {nanoid} from '@reduxjs/toolkit'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPlusCircle} from '@fortawesome/free-solid-svg-icons'
@@ -240,17 +243,16 @@ function Spending(props) {
     )
 }
 
-function Calculate(props) {
+function Calculate() {
     const groups = useSelector(state => state.groups)
     const [show, setShow] = useState(false)
 
 
-
     function onClick() {
         console.log(JSON.stringify({
-                    eventName: 'event',
-                    participants: groups,
-                }), 'send data')
+            eventName: 'event',
+            participants: groups,
+        }), 'send data')
         fetch('/calculator/calculate-spendings', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -261,10 +263,13 @@ function Calculate(props) {
             }
         ).then((response) => {
             if (!response.ok) {
-                console.log(response, 'error happen')
+                console.log('error happen')
             } else {
-                console.log(response, 'big success')
+                console.log('big success')
+                return response.json()
             }
+        }).then(data => {
+            console.log(data)
         }).catch(function (error) {
             console.log(error)
         })

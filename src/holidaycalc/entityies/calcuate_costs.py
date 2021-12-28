@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import List
+from typing import List, Optional
 
 from holidaycalc.helpers.http import generate_schema
 
@@ -14,56 +14,59 @@ class PaymentAction:
 
 @dataclass
 class Person:
-    name: str
     drinks_alcohol: bool
     eat_meat: bool
+    name: Optional[str] = None
+    id: Optional[str] = None
 
 
 class BillType(str, Enum):
     meat = 'meat'
     alcohol = 'alcohol'
-    general = 'general'
+    other = 'other'
 
 
 @dataclass
 class Bill:
-    amount: int
-    bill_type: BillType
+    type: BillType
+    amount: Optional[int] = None
+    id: Optional[str] = None
 
 
 @dataclass
 class Group:
     name: str
     persons: list[Person]
-    spending: List[Bill]
+    spendings: List[Bill]
+    id: Optional[str] = None
 
     @property
     def alcohol_spent(self) -> int:
         spent = 0
-        for i in self.spending:
-            if i.bill_type == BillType.alcohol:
+        for i in self.spendings:
+            if i.type == BillType.alcohol:
                 spent += i.amount
         return spent
 
     @property
     def meat_spent(self) -> int:
         spent = 0
-        for i in self.spending:
-            if i.bill_type == BillType.meat:
+        for i in self.spendings:
+            if i.type == BillType.meat:
                 spent += i.amount
         return spent
 
     @property
     def general_spent(self) -> int:
         spent = 0
-        for i in self.spending:
-            if i.bill_type == BillType.general:
+        for i in self.spendings:
+            if i.type == BillType.other:
                 spent += i.amount
         return spent
 
     @property
     def total_spent(self) -> int:
-        return sum(i.amount for i in self.spending)
+        return sum(i.amount for i in self.spendings)
 
     @property
     def persons_count(self) -> int:

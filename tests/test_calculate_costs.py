@@ -1,9 +1,7 @@
-from decimal import Decimal
-
 import pytest
 
-from backend.entityies.calcuate_costs import Bill, BillType, EventParams, Group, PaymentAction, Person
-from backend.services.calculate_costs import calculate_spendinds
+from holidaycalc.entityies.calcuate_costs import Bill, BillType, EventParams, Group, PaymentAction, Person
+from holidaycalc.services.calculate_costs import calculate_spendinds
 
 
 @pytest.mark.gen_test
@@ -13,20 +11,22 @@ from backend.services.calculate_costs import calculate_spendinds
         (EventParams(
             groups=[
                 Group(
+                    id='qwe',
                     name='Famaly 1',
                     persons=[
                         Person(name='Vasiliy', drinks_alcohol=True, eat_meat=True)
                     ],
-                    spending=[
-                        Bill(amount=100, bill_type=BillType.general),
+                    spendings=[
+                        Bill(amount=100, type=BillType.other),
                     ]
                 ),
                 Group(
+                    id='eew',
                     name='Family 2',
                     persons=[
                         Person(name='Dima', drinks_alcohol=True, eat_meat=True),
                     ],
-                    spending=[]
+                    spendings=[]
                 )
             ]
         ),
@@ -34,26 +34,29 @@ from backend.services.calculate_costs import calculate_spendinds
         (EventParams(
             groups=[
                 Group(
+                    id='qq',
                     name='Famaly 1',
                     persons=[
                         Person(name='Vasiliy', drinks_alcohol=True, eat_meat=True)
                     ],
-                    spending=[
-                        Bill(amount=100, bill_type=BillType.alcohol),
+                    spendings=[
+                        Bill(amount=100, type=BillType.alcohol),
                     ]
                 ),
                 Group(
+                    id='333',
                     name='Family 2',
                     persons=[
                         Person(name='Dima', drinks_alcohol=False, eat_meat=True),
                     ],
-                    spending=[]
+                    spendings=[]
                 )
             ]
         ),
          []),
         (EventParams(groups=[
             Group(
+                id='eeeeew',
                 name='Famaly 1',
                 persons=[
                     Person(
@@ -67,18 +70,19 @@ from backend.services.calculate_costs import calculate_spendinds
                         eat_meat=False,
                     )
                 ],
-                spending=[
+                spendings=[
                     Bill(
                         amount=3500,
-                        bill_type=BillType.general,
+                        type=BillType.other,
                     ),
                     Bill(
                         amount=5000,
-                        bill_type=BillType.alcohol,
+                        type=BillType.alcohol,
                     ),
                 ]
             ),
             Group(
+                id='eeeeew',
                 name='Family 2',
                 persons=[
                     Person(
@@ -92,18 +96,19 @@ from backend.services.calculate_costs import calculate_spendinds
                         eat_meat=True,
                     ),
                 ],
-                spending=[
+                spendings=[
                     Bill(
                         amount=300,
-                        bill_type=BillType.general,
+                        type=BillType.other,
                     ),
                     Bill(
                         amount=1390,
-                        bill_type=BillType.meat,
+                        type=BillType.meat,
                     ),
                 ]
             ),
             Group(
+                id='33434',
                 name='Family 3',
                 persons=[
                     Person(
@@ -117,22 +122,23 @@ from backend.services.calculate_costs import calculate_spendinds
                         eat_meat=True,
                     ),
                 ],
-                spending=[
+                spendings=[
                     Bill(
                         amount=300,
-                        bill_type=BillType.general,
+                        type=BillType.other,
                     ),
                     Bill(
                         amount=1390,
-                        bill_type=BillType.meat,
+                        type=BillType.meat,
                     ),
                     Bill(
                         amount=15000,
-                        bill_type=BillType.general,
+                        type=BillType.other,
                     )
                 ]
             ),
             Group(
+                id='qweqwe',
                 name='Family 4',
                 persons=[
                     Person(
@@ -146,22 +152,23 @@ from backend.services.calculate_costs import calculate_spendinds
                         eat_meat=True,
                     ),
                 ],
-                spending=[
+                spendings=[
                     Bill(
                         amount=300,
-                        bill_type=BillType.general,
+                        type=BillType.other,
                     ),
                     Bill(
                         amount=1390,
-                        bill_type=BillType.meat,
+                        type=BillType.meat,
                     ),
                     Bill(
                         amount=3678,
-                        bill_type=BillType.alcohol,
+                        type=BillType.alcohol,
                     )
                 ]
             ),
             Group(
+                id='eeeeew',
                 name='Family 5',
                 persons=[
                     Person(
@@ -170,10 +177,10 @@ from backend.services.calculate_costs import calculate_spendinds
                         eat_meat=True,
                     )
                 ],
-                spending=[
+                spendings=[
                     Bill(
                         amount=300,
-                        bill_type=BillType.general,
+                        type=BillType.other,
                     )
                 ]
             ),
@@ -189,24 +196,26 @@ from backend.services.calculate_costs import calculate_spendinds
         (EventParams(
             groups=[
                 Group(
+                    id='eeeeew',
                     name='Famaly 1',
                     persons=[
                         Person(name='Person 1', drinks_alcohol=True, eat_meat=True),
                         Person(name='Person 2', drinks_alcohol=True, eat_meat=True),
                     ],
-                    spending=[
-                        Bill(amount=333, bill_type=BillType.meat),
-                        Bill(amount=3000, bill_type=BillType.general),
+                    spendings=[
+                        Bill(amount=333, type=BillType.meat),
+                        Bill(amount=3000, type=BillType.other),
                     ]
                 ),
                 Group(
+                    id='eeeeew',
                     name='Family 2',
                     persons=[
                         Person(name='Person 3', drinks_alcohol=True, eat_meat=True),
                     ],
-                    spending=[
-                        Bill(amount=5500, bill_type=BillType.alcohol),
-                        Bill(amount=300, bill_type=BillType.general),
+                    spendings=[
+                        Bill(amount=5500, type=BillType.alcohol),
+                        Bill(amount=300, type=BillType.other),
                     ]
                 )
             ]

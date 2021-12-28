@@ -33,7 +33,9 @@ def api_schema(request_schema: Schema, response_schema: Schema):
                 }))
                 return
             except ValidationError as e:
-                return json.dumps(e.messages)
+                args[0].set_status(status_code=400)
+                args[0].finish(json.dumps(e.messages))
+                return
             response_entity = await func(*args, request=data, **kwargs)
             response = response_schema.dumps(response_entity)
             args[0].set_status(status_code=200)

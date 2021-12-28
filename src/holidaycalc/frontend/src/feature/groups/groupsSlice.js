@@ -38,18 +38,13 @@ export const groupsSlice = createSlice({
         toggleDrinksAlcohol(state, action) {
             const {id} = action.payload;
             const person = findPerson(id, state)
-            console.log(person, 'person found')
             if (person != null) {
-                console.log('toggle alcohol')
                 person.drinksAlcohol = !person.drinksAlcohol
             }
         },
         toggleEatMeat(state, action) {
             const {id} = action.payload
-            let person = null
-            for (const group of state) {
-                person = group.persons.find(person => person.id === id)
-            }
+            const person = findPerson(id, state)
             if (person != null) {
                 person.eatMeat = !person.eatMeat
             }
@@ -74,7 +69,11 @@ export const groupsSlice = createSlice({
 function findPerson(id, state) {
     let person = null
     for (const group of state) {
-        person = group.persons.find(person => person.id === id)
+        for (const person of group.persons){
+            if (person.id === id){
+                return person
+            }
+        }
     }
     return person
 }
@@ -82,7 +81,11 @@ function findPerson(id, state) {
 function findSpending(id, state) {
     let spending = null
     for (const group of state) {
-        spending = group.spendings.find(spending => spending.id === id)
+        for (const spending of group.spendings){
+            if (spending.id === id){
+                return spending
+            }
+        }
     }
     return spending
 }
