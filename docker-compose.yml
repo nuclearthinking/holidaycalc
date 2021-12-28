@@ -1,15 +1,21 @@
 version: '3.1'
 
 services:
-  db:
-    container_name: hc-postgres
-    image: postgres
+  web:
+    container_name: web-app
+    image: holidaycalc
     restart: always
-    environment:
-      POSTGRES_PASSWORD: holidaycalc
-      POSTGRES_USER: holidaycalc
-      POSTGRES_DB: holidaycalc
     ports:
-      - "5432:5432"
-    volumes:
-      - "${HOME}/docker/volumes/postgres:/var/lib/postgresql/data"
+      - "8080:8000"
+#  db:
+#    container_name: hc-postgres
+#    image: postgres
+#    restart: always
+#    environment:
+#      POSTGRES_PASSWORD: holidaycalc
+#      POSTGRES_USER: holidaycalc
+#      POSTGRES_DB: holidaycalc
+#    ports:
+#      - "5432:5432"
+#    volumes:
+#      - "${HOME}/docker/volumes/postgres:/var/lib/postgresql/data"
