@@ -260,15 +260,14 @@ function Calculate() {
             }
         ).then((response) => {
             if (!response.ok) {
-                console.log('error happen')
+                console.error('error')
             } else {
-                console.log('big success')
                 return response.json()
             }
         }).then(data => {
             dispatch(addPayments({data: data.payments}))
         }).catch(function (error) {
-            console.log(error)
+            console.error(error)
         })
 
     }
@@ -296,7 +295,6 @@ function CalculationResults() {
     const payments = useSelector(state => state.storage.payments)
 
     useEffect(() => {
-        console.log('payments', payments)
         if (payments) {
             setShow(true)
         } else {

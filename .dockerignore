@@ -4,4 +4,7 @@ db.sqlite3
 docker-compose*
 Dockerfile*
 .direnv
+digital_cloud_config.yaml
+tests
+
 

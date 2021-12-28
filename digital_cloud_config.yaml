@@ -1,0 +1,18 @@
+alerts:
+- rule: DEPLOYMENT_FAILED
+- rule: DOMAIN_FAILED
+name: holidaycalc
+region: fra
+services:
+- http_port: 8000
+  image:
+    registry: nuclearthinking
+    registry_type: DOCKER_HUB
+    repository: holidaycalc
+    tag: latest
+  instance_count: 1
+  instance_size_slug: basic-xs
+  name: holidaycalc
+  routes:
+  - path: /
+  source_dir: /
