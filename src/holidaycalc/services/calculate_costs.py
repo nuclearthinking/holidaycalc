@@ -1,10 +1,8 @@
-import asyncio
 from dataclasses import dataclass
-from decimal import Decimal, getcontext, setcontext, ROUND_HALF_UP
+from decimal import Decimal, ROUND_HALF_UP
 from typing import Optional
 
-from holidaycalc.entityies.calcuate_costs import Bill, BillType, EventParams, Group, PaymentAction, Person
-
+from holidaycalc.entityies.calcuate_costs import EventParams, Group, PaymentAction
 
 cent = Decimal('0.01')
 
@@ -15,14 +13,23 @@ class GroupBalance:
     balance: Decimal
 
 
+def prepare_data(groups: list[Group]) -> list[Group]:
+    for group in groups:
+        for s in group.spendings:
+            if isinstance(s.amount, str):
+                s.amount = 0
+    return groups
+
+
 async def calculate_spendinds(event: EventParams) -> list[PaymentAction]:
+    groups = prepare_data(event.groups)
     alcohol_drinkers = 0
     meat_eaters = 0
     general_persons = 0
     general_total_spent = 0
     alcohol_total_spent = 0
     meat_total_spent = 0
-    for group in event.groups:
+    for group in groups:
         alcohol_drinkers += group.alcohol_drinkers_count
         meat_eaters += group.meat_eaters_count
         general_persons += group.persons_count

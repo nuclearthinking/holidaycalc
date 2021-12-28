@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from holidaycalc.helpers.http import generate_schema
 
@@ -29,7 +29,7 @@ class BillType(str, Enum):
 @dataclass
 class Bill:
     type: BillType
-    amount: Optional[int] = None
+    amount: Optional[Union[int, str]] = None
     id: Optional[str] = None
 
 

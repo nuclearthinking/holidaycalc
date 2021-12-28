@@ -1,17 +1,20 @@
 import {createSlice, nanoid} from "@reduxjs/toolkit"
 
-const initialState = []
+const initialState = {
+    groups: [],
+    payments: [],
+}
 
 export const groupsSlice = createSlice({
-    name: 'groups',
+    name: 'storage',
     initialState: initialState,
     reducers: {
         addGroup(state, action) {
-            state.push(action.payload)
+            state.groups.push(action.payload)
         },
         addPerson(state, action) {
             const {id} = action.payload
-            const group = state.find(group => group.id === id)
+            const group = state.groups.find(group => group.id === id)
             group.persons.push({
                 id: nanoid(),
                 name: '',
@@ -21,7 +24,7 @@ export const groupsSlice = createSlice({
         },
         addSpending(state, action) {
             const {id} = action.payload
-            const group = state.find(group => group.id === id)
+            const group = state.groups.find(group => group.id === id)
             group.spendings.push({
                 id: nanoid(),
                 amount: '',
@@ -62,15 +65,26 @@ export const groupsSlice = createSlice({
             if (spending != null) {
                 spending.type = type
             }
+        },
+        addPayments(state, action) {
+            const {data} = action.payload;
+            const payments = state.payments
+            if (!data) return
+            while (payments.length > 0){
+                payments.pop()
+            }
+            for (const p of data) {
+                payments.push(p)
+            }
         }
     }
 })
 
 function findPerson(id, state) {
     let person = null
-    for (const group of state) {
-        for (const person of group.persons){
-            if (person.id === id){
+    for (const group of state.groups) {
+        for (const person of group.persons) {
+            if (person.id === id) {
                 return person
             }
         }
@@ -80,9 +94,9 @@ function findPerson(id, state) {
 
 function findSpending(id, state) {
     let spending = null
-    for (const group of state) {
-        for (const spending of group.spendings){
-            if (spending.id === id){
+    for (const group of state.groups) {
+        for (const spending of group.spendings) {
+            if (spending.id === id) {
                 return spending
             }
         }
@@ -93,5 +107,6 @@ function findSpending(id, state) {
 export const {
     addGroup, addPerson, addSpending,
     changePersonName, toggleDrinksAlcohol, toggleEatMeat,
-    changeSpendingAmount, changeSpendingType
+    changeSpendingAmount, changeSpendingType,
+    addPayments,
 } = groupsSlice.actions

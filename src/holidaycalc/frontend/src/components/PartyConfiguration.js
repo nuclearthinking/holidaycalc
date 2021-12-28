@@ -8,18 +8,16 @@ import {
     changeSpendingAmount,
     changeSpendingType,
     toggleDrinksAlcohol,
-    toggleEatMeat
-} from "../feature/groups/groupsSlice";
-import {
+    toggleEatMeat,
     addPayments
-} from "../feature/payments/paymentsSlice"
+} from "../feature/groups/groupsSlice";
 import {nanoid} from '@reduxjs/toolkit'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faPlusCircle} from '@fortawesome/free-solid-svg-icons'
+import {faPlusCircle, faRubleSign, faArrowRight} from '@fortawesome/free-solid-svg-icons'
 import {Modal} from 'react-bootstrap'
 
 export default function PartyConfiguration() {
-    const groups = useSelector(state => state.groups)
+    const groups = useSelector(state => state.storage.groups)
     const [modalShow, setModalShow] = useState(false)
     const [groupName, setGroupName] = useState('')
     const [groupNameState, setGroupNameState] = useState('empty')
@@ -77,6 +75,7 @@ export default function PartyConfiguration() {
             </button>
         </div>
         <Calculate/>
+        <CalculationResults/>
         <Modal show={modalShow} onHide={handleCloseModal}>
             <Modal.Header closeButton>
                 <Modal.Title>Add new group</Modal.Title>
@@ -244,15 +243,13 @@ function Spending(props) {
 }
 
 function Calculate() {
-    const groups = useSelector(state => state.groups)
+    const groups = useSelector(state => state.storage.groups)
     const [show, setShow] = useState(false)
+
+    const dispatch = useDispatch()
 
 
     function onClick() {
-        console.log(JSON.stringify({
-            eventName: 'event',
-            participants: groups,
-        }), 'send data')
         fetch('/calculator/calculate-spendings', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -269,7 +266,7 @@ function Calculate() {
                 return response.json()
             }
         }).then(data => {
-            console.log(data)
+            dispatch(addPayments({data: data.payments}))
         }).catch(function (error) {
             console.log(error)
         })
@@ -292,4 +289,45 @@ function Calculate() {
     } else {
         return <div/>
     }
+}
+
+function CalculationResults() {
+    const [show, setShow] = useState(false)
+    const payments = useSelector(state => state.storage.payments)
+
+    useEffect(() => {
+        console.log('payments', payments)
+        if (payments) {
+            setShow(true)
+        } else {
+            setShow(false)
+        }
+    }, [payments])
+
+
+    if (show) {
+        return <div className={'container'} style={{marginTop: 20}}>
+            <div className={'row'}>
+                {payments.map((p, i) => {
+                    return <PaymentRow
+                        payer={p.payer}
+                        amount={p.amount}
+                        recepient={p.recepient}
+                    />
+                })}
+            </div>
+        </div>
+    } else {
+        return <div/>
+    }
+}
+
+function PaymentRow(props) {
+    return <div className={'row align-content-center'}>
+        <div className={'col-md-12 justify-content-center'}>
+            <p className={'h5 text-center'}>{props.payer}<FontAwesomeIcon
+                icon={faArrowRight} style={{marginLeft: 30, marginRight: 30}}/>  {props.amount}<FontAwesomeIcon icon={faRubleSign} size={'xs'}/> <FontAwesomeIcon
+                icon={faArrowRight} style={{marginLeft: 30, marginRight: 30}}/>{props.recepient}</p>
+        </div>
+    </div>
 }
