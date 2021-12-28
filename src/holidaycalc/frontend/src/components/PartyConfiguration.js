@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from 'react-redux'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import {
     addGroup,
     addPerson,
@@ -22,6 +22,7 @@ export default function PartyConfiguration() {
     const [groupNameState, setGroupNameState] = useState('empty')
 
     const dispatch = useDispatch()
+
 
     function onModalGroupNameChange(e) {
         setGroupName(e.target.value)
@@ -72,9 +73,10 @@ export default function PartyConfiguration() {
                 +
             </button>
         </div>
+        <Calculate/>
         <Modal show={modalShow} onHide={handleCloseModal}>
             <Modal.Header closeButton>
-                <Modal.Title>Modal heading</Modal.Title>
+                <Modal.Title>Add new group</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className={'row justify-content-center'}>
@@ -117,7 +119,7 @@ function Group(props) {
     }
 
     return (
-        <div className='container' style={{marginTop:15}}>
+        <div className='container' style={{marginTop: 15}}>
             <div className='row'>
                 <p className={'h3'}>{name}</p>
             </div>
@@ -189,16 +191,16 @@ function Person(props) {
                     </div>
                 </div>
                 <div className={'col-md-12 col-lg-6 align-self-center'}>
-                        <div className="form-check form-check-inline">
-                            <input className="form-check-input" type="checkbox" id="alcoholCheckbox" checked={drinksAlcohol}
+                    <div className="form-check form-check-inline">
+                        <input className="form-check-input" type="checkbox" id="alcoholCheckbox" checked={drinksAlcohol}
                                onChange={onChangeDrinksAlcohol}/>
-                            <label className="form-check-label" htmlFor="alcoholCheckbox">Alcohol</label>
-                        </div>
-                        <div className="form-check form-check-inline">
-                            <input className="form-check-input" type="checkbox" id="meatCheckbox" checked={eatMeat}
+                        <label className="form-check-label" htmlFor="alcoholCheckbox">Alcohol</label>
+                    </div>
+                    <div className="form-check form-check-inline">
+                        <input className="form-check-input" type="checkbox" id="meatCheckbox" checked={eatMeat}
                                onChange={onChangeEatMeat}/>
-                            <label className="form-check-label" htmlFor="meatCheckbox">Meat</label>
-                        </div>
+                        <label className="form-check-label" htmlFor="meatCheckbox">Meat</label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -224,9 +226,9 @@ function Spending(props) {
     }
 
     return (
-        <div className={'row'}>
+        <div className={'row'} style={{marginTop: 5}}>
             <div className="input-group flex-nowrap">
-                <input type="number" className="form-control" placeholder="Spent amount" value={amount}
+                <input type="number" className="form-control" placeholder="Amount" value={amount}
                        onChange={onChangeAmount}/>
                 <select className="form-select" value={type} onChange={onChangeType}>
                     <option value={'other'}>Other</option>
@@ -236,4 +238,53 @@ function Spending(props) {
             </div>
         </div>
     )
+}
+
+function Calculate(props) {
+    const groups = useSelector(state => state.groups)
+    const [show, setShow] = useState(false)
+
+
+
+    function onClick() {
+        console.log(JSON.stringify({
+                    eventName: 'event',
+                    participants: groups,
+                }), 'send data')
+        fetch('/calculator/calculate-spendings', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    eventName: 'event',
+                    participants: groups,
+                })
+            }
+        ).then((response) => {
+            if (!response.ok) {
+                console.log(response, 'error happen')
+            } else {
+                console.log(response, 'big success')
+            }
+        }).catch(function (error) {
+            console.log(error)
+        })
+
+    }
+
+    useEffect(() => {
+        if (groups.length >= 2) {
+            setShow(true)
+        }
+    }, [groups])
+
+
+    if (show) {
+        return <div className={'row align-content-center'} style={{marginTop: 10}}>
+            <button type="button" className="btn btn-success btn-lg" onClick={onClick}>
+                Calculate
+            </button>
+        </div>
+    } else {
+        return <div/>
+    }
 }

@@ -1,4 +1,6 @@
 import json
+from json import JSONDecodeError
+
 import marshmallow_dataclass
 from marshmallow import Schema, ValidationError
 
@@ -24,6 +26,12 @@ def api_schema(request_schema: Schema, response_schema: Schema):
             try:
                 request_body = args[0].request.body.decode('utf-8')
                 data = request_schema.loads(request_body)
+            except JSONDecodeError:
+                args[0].set_status(status_code=400)
+                args[0].finish(json.dumps({
+                    'error': 'invlaid json'
+                }))
+                return
             except ValidationError as e:
                 return json.dumps(e.messages)
             response_entity = await func(*args, request=data, **kwargs)
