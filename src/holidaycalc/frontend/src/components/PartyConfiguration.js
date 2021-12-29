@@ -71,14 +71,14 @@ export default function PartyConfiguration() {
         })}
         <div className={'row align-content-center'} style={{marginTop: 10}}>
             <button type="button" className="btn btn-success btn-lg" onClick={handleShowModal}>
-                +
+                Добавить группу
             </button>
         </div>
         <Calculate/>
         <CalculationResults/>
         <Modal show={modalShow} onHide={handleCloseModal}>
             <Modal.Header closeButton>
-                <Modal.Title>Add new group</Modal.Title>
+                <Modal.Title>Добавить новую группу</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className={'row justify-content-center'}>
@@ -87,7 +87,7 @@ export default function PartyConfiguration() {
                         <input
                             className={getGroupNameInputClass()}
                             type="text"
-                            placeholder="Group name"
+                            placeholder="Введите название"
                             value={groupName}
                             onChange={onModalGroupNameChange}
                         />
@@ -96,8 +96,8 @@ export default function PartyConfiguration() {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>Close</button>
-                <button type="button" className="btn btn-primary" onClick={addNewGroup}>Add</button>
+                <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>Закрыть</button>
+                <button type="button" className="btn btn-primary" onClick={addNewGroup}>Добавить</button>
             </Modal.Footer>
         </Modal>
     </div>
@@ -127,8 +127,8 @@ function Group(props) {
             </div>
             <div className={'row'}>
                 <div className={'col'}>
-                    <p className={'h6'}>Persons <FontAwesomeIcon icon={faPlusCircle} color={'green'}
-                                                                 onClick={addNewPerson}/></p>
+                    <p className={'h6'}>Участники <FontAwesomeIcon icon={faPlusCircle} color={'green'}
+                                                                   onClick={addNewPerson}/></p>
                 </div>
             </div>
             <div className='row justify-content-center'>
@@ -144,8 +144,8 @@ function Group(props) {
             </div>
             <div className={'row'} style={{marginTop: 5}}>
                 <div className={'col'}>
-                    <p className={'h6'}>Spendings <FontAwesomeIcon icon={faPlusCircle} color={'green'}
-                                                                   onClick={addNewSpending}/></p>
+                    <p className={'h6'}>Траты <FontAwesomeIcon icon={faPlusCircle} color={'green'}
+                                                               onClick={addNewSpending}/></p>
                 </div>
             </div>
             <div className='row justify-content-center'>
@@ -188,20 +188,21 @@ function Person(props) {
                 <div className={'col-md-12 col-lg-6'}>
                     <div className="input-group flex-nowrap">
                         <span className="input-group-text" id="name"><i className="bi bi-person-circle"/></span>
-                        <input type="text" className="form-control" placeholder="Name" aria-label="Username"
-                               aria-describedby="name" value={name} onChange={onChangeName}/>
+                        <input type="text" className="form-control" placeholder="Имя" value={name}
+                               onChange={onChangeName}/>
                     </div>
                 </div>
                 <div className={'col-md-12 col-lg-6 align-self-center'}>
                     <div className="form-check form-check-inline">
-                        <input className="form-check-input" type="checkbox" id="alcoholCheckbox" checked={drinksAlcohol}
+                        <input className="form-check-input" type="checkbox" id={id + ':alcoholCheckbox'}
+                               checked={drinksAlcohol}
                                onChange={onChangeDrinksAlcohol}/>
-                        <label className="form-check-label" htmlFor="alcoholCheckbox">Alcohol</label>
+                        <label className="form-check-label" htmlFor={id + ':alcoholCheckbox'}>Алкоголь</label>
                     </div>
                     <div className="form-check form-check-inline">
-                        <input className="form-check-input" type="checkbox" id="meatCheckbox" checked={eatMeat}
+                        <input className="form-check-input" type="checkbox" id={id + ":meatCheckbox"} checked={eatMeat}
                                onChange={onChangeEatMeat}/>
-                        <label className="form-check-label" htmlFor="meatCheckbox">Meat</label>
+                        <label className="form-check-label" htmlFor={id + ":meatCheckbox"}>Мясо</label>
                     </div>
                 </div>
             </div>
@@ -230,12 +231,12 @@ function Spending(props) {
     return (
         <div className={'row'} style={{marginTop: 5}}>
             <div className="input-group flex-nowrap">
-                <input type="number" className="form-control" placeholder="Amount" value={amount}
+                <input type="number" className="form-control" placeholder="Сумма" value={amount}
                        onChange={onChangeAmount}/>
                 <select className="form-select" value={type} onChange={onChangeType}>
-                    <option value={'other'}>Other</option>
-                    <option value={'alcohol'}>Alcohol</option>
-                    <option value={'meat'}>Meat</option>
+                    <option value={'other'}>Другое</option>
+                    <option value={'alcohol'}>Алкоголь</option>
+                    <option value={'meat'}>Мясо</option>
                 </select>
             </div>
         </div>
@@ -282,7 +283,7 @@ function Calculate() {
     if (show) {
         return <div className={'row align-content-center'} style={{marginTop: 10}}>
             <button type="button" className="btn btn-success btn-lg" onClick={onClick}>
-                Calculate
+                Посчитать
             </button>
         </div>
     } else {
@@ -324,7 +325,8 @@ function PaymentRow(props) {
     return <div className={'row align-content-center'}>
         <div className={'col-md-12 justify-content-center'}>
             <p className={'h5 text-center'}>{props.payer}<FontAwesomeIcon
-                icon={faArrowRight} style={{marginLeft: 30, marginRight: 30}}/>  {props.amount}<FontAwesomeIcon icon={faRubleSign} size={'xs'}/> <FontAwesomeIcon
+                icon={faArrowRight} style={{marginLeft: 30, marginRight: 30}}/> {props.amount}<FontAwesomeIcon
+                icon={faRubleSign} size={'xs'}/> <FontAwesomeIcon
                 icon={faArrowRight} style={{marginLeft: 30, marginRight: 30}}/>{props.recepient}</p>
         </div>
     </div>
