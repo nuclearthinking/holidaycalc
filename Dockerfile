@@ -6,9 +6,15 @@ RUN apk add --no-cache gcc musl-dev python3-dev libffi-dev openssl-dev cargo pos
 RUN pip install -U pip
 RUN pip install poetry==$POETRY_VERSION
 
-COPY . /app
-
 WORKDIR /app
+
+COPY poetry.lock /app
+COPY pyproject.toml /app
+
+RUN poetry config virtualenvs.create false \
+  && poetry install --no-dev --no-interaction --no-ansi
+
+COPY . /app
 
 RUN poetry config virtualenvs.create false \
   && poetry install --no-dev --no-interaction --no-ansi

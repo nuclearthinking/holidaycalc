@@ -292,7 +292,7 @@ function Calculate() {
         </div>
     } else {
         return <div className={'row align-content-center'} style={{marginTop: 10}}>
-            <button type="button" className="btn btn-success btn-lg"  disabled={true} onClick={onClick}>
+            <button type="button" className="btn btn-success btn-lg"  disabled={true}>
                 Посчитать
             </button>
         </div>
