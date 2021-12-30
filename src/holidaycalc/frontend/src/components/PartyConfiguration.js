@@ -15,6 +15,7 @@ import {nanoid} from '@reduxjs/toolkit'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPlusCircle, faRubleSign, faArrowRight} from '@fortawesome/free-solid-svg-icons'
 import {Modal} from 'react-bootstrap'
+import HelperAlert from "./HelperAllert";
 
 export default function PartyConfiguration() {
     const groups = useSelector(state => state.storage.groups)
@@ -60,46 +61,49 @@ export default function PartyConfiguration() {
     }
 
     return <div className='container'>
-        {groups.map((group, i) => {
-            return <Group
-                name={group.name}
-                id={group.id}
-                key={group.id}
-                persons={group.persons}
-                spendings={group.spendings}
-            />
-        })}
-        <div className={'row align-content-center'} style={{marginTop: 10}}>
-            <button type="button" className="btn btn-success btn-lg" onClick={handleShowModal}>
-                Добавить группу
-            </button>
-        </div>
-        <Calculate/>
-        <CalculationResults/>
-        <Modal show={modalShow} onHide={handleCloseModal}>
-            <Modal.Header closeButton>
-                <Modal.Title>Добавить новую группу</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <div className={'row justify-content-center'}>
-                    <div className={'col-1'}/>
-                    <div className={'col-auto'}>
-                        <input
-                            className={getGroupNameInputClass()}
-                            type="text"
-                            placeholder="Введите название"
-                            value={groupName}
-                            onChange={onModalGroupNameChange}
-                        />
+        <div className={'row justify-content-center'}>
+            <HelperAlert/>
+            {groups.map((group, i) => {
+                return <Group
+                    name={group.name}
+                    id={group.id}
+                    key={group.id}
+                    persons={group.persons}
+                    spendings={group.spendings}
+                />
+            })}
+            <div className={'row align-content-center'} style={{marginTop: 10}}>
+                <button type="button" className="btn btn-success btn-lg" onClick={handleShowModal}>
+                    Добавить группу
+                </button>
+            </div>
+            <Calculate/>
+            <CalculationResults/>
+            <Modal show={modalShow} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Добавить новую группу</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className={'row justify-content-center'}>
+                        <div className={'col-1'}/>
+                        <div className={'col-auto'}>
+                            <input
+                                className={getGroupNameInputClass()}
+                                type="text"
+                                placeholder="Введите название"
+                                value={groupName}
+                                onChange={onModalGroupNameChange}
+                            />
+                        </div>
+                        <div className={'col-1'}/>
                     </div>
-                    <div className={'col-1'}/>
-                </div>
-            </Modal.Body>
-            <Modal.Footer>
-                <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>Закрыть</button>
-                <button type="button" className="btn btn-primary" onClick={addNewGroup}>Добавить</button>
-            </Modal.Footer>
-        </Modal>
+                </Modal.Body>
+                <Modal.Footer>
+                    <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>Закрыть</button>
+                    <button type="button" className="btn btn-primary" onClick={addNewGroup}>Добавить</button>
+                </Modal.Footer>
+            </Modal>
+        </div>
     </div>
 }
 
@@ -287,7 +291,11 @@ function Calculate() {
             </button>
         </div>
     } else {
-        return <div/>
+        return <div className={'row align-content-center'} style={{marginTop: 10}}>
+            <button type="button" className="btn btn-success btn-lg"  disabled={true} onClick={onClick}>
+                Посчитать
+            </button>
+        </div>
     }
 }
 
