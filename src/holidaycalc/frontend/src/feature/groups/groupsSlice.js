@@ -12,15 +12,27 @@ export const groupsSlice = createSlice({
         addGroup(state, action) {
             state.groups.push(action.payload)
         },
+        deleteGroup(state, action) {
+            const {id} = action.payload
+            state.groups = state.groups.filter(group => group.id !== id)
+        },
         addPerson(state, action) {
             const {id} = action.payload
             const group = state.groups.find(group => group.id === id)
+            if (!group) {
+                return state
+            }
             group.persons.push({
                 id: nanoid(),
                 name: '',
                 drinksAlcohol: true,
                 eatMeat: true,
             })
+        },
+        deletePerson(state, action) {
+            const {id} = action.payload
+            const group = findGroupWithPerson(id, state)
+            group.persons = group.persons.filter(person => person.id !== id)
         },
         addSpending(state, action) {
             const {id} = action.payload
@@ -30,6 +42,11 @@ export const groupsSlice = createSlice({
                 amount: '',
                 type: 'other'
             })
+        },
+        deleteSpending(state, action) {
+            const {id} = action.payload
+            const group = findGroupWithSpending(id, state)
+            group.spendings = group.spendings.filter(spending => spending.id !== id)
         },
         changePersonName(state, action) {
             const {id, name} = action.payload
@@ -70,7 +87,7 @@ export const groupsSlice = createSlice({
             const {data} = action.payload;
             const payments = state.payments
             if (!data) return
-            while (payments.length > 0){
+            while (payments.length > 0) {
                 payments.pop()
             }
             for (const p of data) {
@@ -85,11 +102,31 @@ function findPerson(id, state) {
     for (const group of state.groups) {
         for (const person of group.persons) {
             if (person.id === id) {
-                return person
+                return person;
             }
         }
     }
     return person
+}
+
+function findGroupWithPerson(id, state) {
+    for (const group of state.groups) {
+        for (const person of group.persons) {
+            if (person.id === id) {
+                return group;
+            }
+        }
+    }
+}
+
+function findGroupWithSpending(id, state) {
+    for (const group of state.groups) {
+        for (const spending of group.spendings) {
+            if (spending.id === id) {
+                return group;
+            }
+        }
+    }
 }
 
 function findSpending(id, state) {
@@ -105,8 +142,8 @@ function findSpending(id, state) {
 }
 
 export const {
-    addGroup, addPerson, addSpending,
-    changePersonName, toggleDrinksAlcohol, toggleEatMeat,
-    changeSpendingAmount, changeSpendingType,
+    addGroup, deleteGroup,
+    addPerson,changePersonName, toggleDrinksAlcohol, toggleEatMeat, deletePerson,
+    addSpending,changeSpendingAmount, changeSpendingType, deleteSpending,
     addPayments,
 } = groupsSlice.actions

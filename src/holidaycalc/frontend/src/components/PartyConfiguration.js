@@ -4,12 +4,15 @@ import {
     addGroup,
     addPerson,
     addSpending,
+    deleteGroup,
     changePersonName,
     changeSpendingAmount,
     changeSpendingType,
     toggleDrinksAlcohol,
     toggleEatMeat,
-    addPayments
+    addPayments,
+    deleteSpending,
+    deletePerson,
 } from "../feature/groups/groupsSlice";
 import {nanoid} from '@reduxjs/toolkit'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
@@ -60,9 +63,9 @@ export default function PartyConfiguration() {
         }
     }
 
-    return <div className='container'>
-        <div className={'row justify-content-center'}>
-            <HelperAlert/>
+    return <div className='container-md'>
+        <HelperAlert/>
+        <div className={'row row-cols-1'}>
             {groups.map((group, i) => {
                 return <Group
                     name={group.name}
@@ -72,38 +75,42 @@ export default function PartyConfiguration() {
                     spendings={group.spendings}
                 />
             })}
-            <div className={'row align-content-center'} style={{marginTop: 10}}>
-                <button type="button" className="btn btn-success btn-lg" onClick={handleShowModal}>
-                    Добавить группу
-                </button>
+        </div>
+        <div className={'row row-cols-1'}>
+            <div className={'col mb-2'}>
+                <div className={'row'}>
+                    <button type="button" className="btn btn-success btn-lg" onClick={handleShowModal}>
+                        Добавить группу
+                    </button>
+                </div>
             </div>
             <Calculate/>
-            <CalculationResults/>
-            <Modal show={modalShow} onHide={handleCloseModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Добавить новую группу</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <div className={'row justify-content-center'}>
-                        <div className={'col-1'}/>
-                        <div className={'col-auto'}>
-                            <input
-                                className={getGroupNameInputClass()}
-                                type="text"
-                                placeholder="Введите название"
-                                value={groupName}
-                                onChange={onModalGroupNameChange}
-                            />
-                        </div>
-                        <div className={'col-1'}/>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>Закрыть</button>
-                    <button type="button" className="btn btn-primary" onClick={addNewGroup}>Добавить</button>
-                </Modal.Footer>
-            </Modal>
         </div>
+        <CalculationResults/>
+        <Modal show={modalShow} onHide={handleCloseModal}>
+            <Modal.Header closeButton>
+                <Modal.Title>Добавить новую группу</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <div className={'row justify-content-center'}>
+                    <div className={'col-1'}/>
+                    <div className={'col-auto'}>
+                        <input
+                            className={getGroupNameInputClass()}
+                            type="text"
+                            placeholder="Введите название"
+                            value={groupName}
+                            onChange={onModalGroupNameChange}
+                        />
+                    </div>
+                    <div className={'col-1'}/>
+                </div>
+            </Modal.Body>
+            <Modal.Footer>
+                <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>Закрыть</button>
+                <button type="button" className="btn btn-primary" onClick={addNewGroup}>Добавить</button>
+            </Modal.Footer>
+        </Modal>
     </div>
 }
 
@@ -124,10 +131,16 @@ function Group(props) {
         }))
     }
 
+    function onDeleteGroup() {
+        dispatch(deleteGroup({id: id}))
+    }
+
     return (
-        <div className='container' style={{marginTop: 15}}>
+        <div className='col mb-2'>
             <div className='row'>
-                <p className={'h3'}>{name}</p>
+                <p className={'h3'}>{name}
+                    <button type="button" className="btn-close btn-sm" onClick={onDeleteGroup}/>
+                </p>
             </div>
             <div className={'row'}>
                 <div className={'col'}>
@@ -146,7 +159,7 @@ function Group(props) {
                     />
                 }) : ''}
             </div>
-            <div className={'row'} style={{marginTop: 5}}>
+            <div className={'row'}>
                 <div className={'col'}>
                     <p className={'h6'}>Траты <FontAwesomeIcon icon={faPlusCircle} color={'green'}
                                                                onClick={addNewSpending}/></p>
@@ -186,9 +199,17 @@ function Person(props) {
         dispatch(toggleEatMeat({id: id}))
     }
 
+    function onDelete() {
+        dispatch(deletePerson({id: id}))
+    }
+
+    const closeBtnStyle = {
+        position: 'absolute', right: '2%', top: '50%', transform: 'translate(-2%, -50%)'
+    }
+
     return (
-        <div className={'row align-content-center'}>
-            <div className={'row justify-content-center'}>
+        <div className={'row mb-1'} style={{position: 'relative'}}>
+            <div className={'row'}>
                 <div className={'col-md-12 col-lg-6'}>
                     <div className="input-group flex-nowrap">
                         <span className="input-group-text" id="name"><i className="bi bi-person-circle"/></span>
@@ -196,7 +217,7 @@ function Person(props) {
                                onChange={onChangeName}/>
                     </div>
                 </div>
-                <div className={'col-md-12 col-lg-6 align-self-center'}>
+                <div className={'col-md-12 col-lg-6'} style={{position: 'relative'}}>
                     <div className="form-check form-check-inline">
                         <input className="form-check-input" type="checkbox" id={id + ':alcoholCheckbox'}
                                checked={drinksAlcohol}
@@ -210,6 +231,7 @@ function Person(props) {
                     </div>
                 </div>
             </div>
+            <button type="button" className="btn-close btn-sm" style={closeBtnStyle} onClick={onDelete}/>
         </div>
     )
 }
@@ -285,16 +307,20 @@ function Calculate() {
 
 
     if (show) {
-        return <div className={'row align-content-center'} style={{marginTop: 10}}>
-            <button type="button" className="btn btn-success btn-lg" onClick={onClick}>
-                Посчитать
-            </button>
+        return <div className={'col mb-2'}>
+            <div className={'row'}>
+                <button type="button" className="btn btn-success btn-lg" onClick={onClick}>
+                    Посчитать
+                </button>
+            </div>
         </div>
     } else {
-        return <div className={'row align-content-center'} style={{marginTop: 10}}>
-            <button type="button" className="btn btn-success btn-lg"  disabled={true}>
-                Посчитать
-            </button>
+        return <div className={'col mb-2'}>
+            <div className={'row'}>
+                <button type="button" className="btn btn-success btn-lg" disabled={true}>
+                    Посчитать
+                </button>
+            </div>
         </div>
     }
 }
