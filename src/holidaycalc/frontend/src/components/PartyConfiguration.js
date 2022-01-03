@@ -2,21 +2,21 @@ import {useDispatch, useSelector} from 'react-redux'
 import {useEffect, useState} from 'react'
 import {
     addGroup,
+    addPayments,
     addPerson,
     addSpending,
-    deleteGroup,
     changePersonName,
     changeSpendingAmount,
     changeSpendingType,
+    deleteGroup,
+    deletePerson,
+    deleteSpending,
     toggleDrinksAlcohol,
     toggleEatMeat,
-    addPayments,
-    deleteSpending,
-    deletePerson,
 } from "../feature/groups/groupsSlice";
 import {nanoid} from '@reduxjs/toolkit'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faPlusCircle, faRubleSign, faArrowRight} from '@fortawesome/free-solid-svg-icons'
+import {faArrowRight, faPlusCircle, faRubleSign} from '@fortawesome/free-solid-svg-icons'
 import {Modal} from 'react-bootstrap'
 import HelperAlert from "./HelperAllert";
 
@@ -204,7 +204,7 @@ function Person(props) {
     }
 
     const closeBtnStyle = {
-        position: 'absolute', right: '2%', top: '50%', transform: 'translate(-2%, -50%)'
+        position: 'absolute', right: '3%', top: '50%', transform: 'translate(-3%, -50%)'
     }
 
     return (
@@ -254,6 +254,10 @@ function Spending(props) {
         }))
     }
 
+    function onDelete() {
+        dispatch(deleteSpending({id: id}))
+    }
+
     return (
         <div className={'row'} style={{marginTop: 5}}>
             <div className="input-group flex-nowrap">
@@ -264,6 +268,7 @@ function Spending(props) {
                     <option value={'alcohol'}>Алкоголь</option>
                     <option value={'meat'}>Мясо</option>
                 </select>
+                <span className={'input-group-text'}> <button type="button" className="btn-close btn-sm" onClick={onDelete}/></span>
             </div>
         </div>
     )
