@@ -1,7 +1,7 @@
 import pytest
 
-from holidaycalc.entityies.calcuate_costs import Bill, BillType, EventParams, Group, PaymentAction, Person
-from holidaycalc.services.calculate_costs import calculate_spendinds
+from holidaycalc.services.calculate_costs import calculate_spendinds, Group, EventParams, Person, Bill, BillType, \
+    PaymentAction
 
 
 @pytest.mark.gen_test
