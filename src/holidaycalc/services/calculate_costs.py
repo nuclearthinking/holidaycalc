@@ -43,27 +43,15 @@ class Group:
 
     @property
     def alcohol_spent(self) -> int:
-        spent = 0
-        for i in self.spendings:
-            if i.type == BillType.alcohol:
-                spent += i.amount
-        return spent
+        return sum(i.amount for i in self.spendings if i.type == BillType.alcohol)
 
     @property
     def meat_spent(self) -> int:
-        spent = 0
-        for i in self.spendings:
-            if i.type == BillType.meat:
-                spent += i.amount
-        return spent
+        return sum(i.amount for i in self.spendings if i.type == BillType.meat)
 
     @property
     def general_spent(self) -> int:
-        spent = 0
-        for i in self.spendings:
-            if i.type == BillType.other:
-                spent += i.amount
-        return spent
+        return sum(i.amount for i in self.spendings if i.type == BillType.other)
 
     @property
     def total_spent(self) -> int:
@@ -132,7 +120,7 @@ async def calculate_spendinds(event: EventParams) -> list[PaymentAction]:
         payers.append(group_balance)
 
     result_actions: list[PaymentAction] = []
-    while any([payer.balance for payer in payers if abs(payer.balance) > 1]):
+    while any(payer.balance for payer in payers if abs(payer.balance) > 1):
         payer = get_next_proficit(payers)
         recepient = get_next_deficit(payers)
         if payer.balance > abs(recepient.balance):
@@ -159,14 +147,8 @@ async def calculate_spendinds(event: EventParams) -> list[PaymentAction]:
 
 
 def get_next_proficit(actors: list[GroupBalance]) -> Optional[GroupBalance]:
-    for i in actors:
-        if i.balance > 0:
-            return i
-    return None
+    return next((i for i in actors if i.balance > 0), None)
 
 
 def get_next_deficit(actors: list[GroupBalance]) -> Optional[GroupBalance]:
-    for i in actors:
-        if i.balance < 0:
-            return i
-    return None
+    return next((i for i in actors if i.balance < 0), None)
